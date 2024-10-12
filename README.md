@@ -39,11 +39,10 @@ Proyek ini bertujuan untuk membangun model machine learning yang dapat mempredik
 
 Untuk mencapai tujuan-tujuan tersebut, berikut beberapa solusi yang berbasis pada model machine learning yang diterapkan:
 
-1. Menggunakan model regresi logistik dan decision trees untuk membandingkan akurasi prediksi churn pelanggan.
+1. Menggunakan model regresi, ensemble learning berbasis decision tree dan boosting, support vector classifier, model berbasis Jarak (Instance-Based Learning), dan nural network untuk membandingkan akurasi prediksi churn pelanggan.
 2. Mengimplementasikan PCA untuk reduksi dimensi dan SMOTE untuk menangani class imbalance
-3. Melakukan tuning hyperparameter pada model seperti Random Forest dan XGBoost untuk meningkatkan performa model dalam memprediksi churn pelanggan.
 
-Model-model ini akan diuji menggunakan metrik evaluasi yang relevan seperti akurasi, precision, recall, dan F1 score.
+Model-model ini akan diuji menggunakan metrik evaluasi yang relevan seperti akurasi, precision, recall, F1 score, dan ROC-AUC.
 
 ## Data Understanding
 
