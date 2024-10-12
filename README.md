@@ -224,31 +224,41 @@ Metrik evaluasi yang digunakan adalah sebagai berikut:
 1. Precision
 
     Precision mengukur proporsi prediksi positif yang benar dari seluruh prediksi positif yang dilakukan oleh model.
+
     $$\text{PRECISSION} = \frac{TP}{TP+FP}$$
-    dimana TP adalah True Postivie dan FP adalah false positives.
+
+    Dimana TP adalah True Postivie dan FP adalah false positives.
     Metrik ini menunjukkan seberapa banyak dari prediksi churn yang benar-benar merupakan churn. Precision yang tinggi berarti model dapat meminimalisir false positive.
 
 2. Recall
 
     Recall mengukur proporsi prediksi positif yang benar dari seluruh data aktual yang positif.
+
     $$\text{RECALL} = \frac{TP}{TP+FN}$$
-    di mana FN adalah false negatives.
+
+    Di mana FN adalah false negatives.
     Recall memberikan gambaran seberapa baik model dalam mendeteksi semua nasabah yang churn. Recall yang tinggi menunjukkan bahwa model mampu menangkap banyak kasus churn meskipun terdapat beberapa kesalahan.
 
 3. F1 Score
 
     F1 Score adalah rata-rata harmonis dari Precision dan Recall, memberikan keseimbangan antara keduanya.
+
     $$\text{F1-Score} = 2 \cdot \frac{Precission \cdot Recall}{Precission + Recall}$$
+
     F1 Score yang tinggi menunjukkan bahwa model memiliki performa yang baik dalam mendeteksi churn dengan meminimalisir kesalahan baik dari sisi false positives maupun false negatives.
 
 4. ROC-AUC
 
     ROC-AUC mengukur kemampuan model untuk membedakan antara kelas positif dan negatif. ROC (Receiver Operating Characteristic) adalah grafik yang menunjukkan true positive rate (TPR) versus false positive rate (FPR) pada berbagai threshold klasifikasi.
     True Positive Rate (TPR): Juga dikenal sebagai Sensitivitas, dihitung sebagai:
+
     $$\text{TPR} = \frac{TP}{TP+FP}$$
+
     dimana TP ada True Positive dan FP adalah False Positive.
     False Positive Rate (FPR): Dihitung sebagai:
+
     $$\text{FPR} = \frac{FP}{FP+TN}$$
+
     dimana FP adalah False Positive dan TN adalah True Negative.
     Dalam ROC Curve, FPR ditampilkan pada sumbu X dan TPR pada sumbu Y. Dengan mengubah ambang batas, kita dapat menghitung nilai TPR dan FPR yang berbeda, membentuk kurva.
     AUC adalah ukuran yang menunjukkan seberapa baik model klasifikasi dapat memisahkan dua kelas. Nilai AUC berkisar antara 0 hingga 1:
@@ -259,7 +269,9 @@ Metrik evaluasi yang digunakan adalah sebagai berikut:
 5. Accuracy
 
     Akurasi mengukur proporsi prediksi yang benar (positif dan negatif) dari seluruh prediksi yang dilakukan oleh model.
+
     $$\text{Accuracy} = \frac{TP + TN}{TP+TN+FP+FN}$$
+
     Akurasi memberikan gambaran umum tentang seberapa baik model dalam membuat prediksi secara keseluruhan. Namun, dalam kasus data yang tidak seimbang, akurasi tidak selalu mencerminkan kinerja model secara tepat.
 
 ### Hasil Evaluasi
