@@ -1,4 +1,4 @@
-# Laporan Proyek Machine Learning - Muhamad Fajar Faturohman
+# Bank Customer Churn Prediction
 
 ## Domain Proyek
 
@@ -11,8 +11,9 @@ Studi terkait dari industri telekomunikasi menunjukkan bahwa penggunaan analitik
 Dengan demikian, penggunaan analitik prediktif dapat memberikan keuntungan kompetitif bagi bank dalam mempertahankan pelanggan dan meningkatkan loyalitas mereka.
 
 Referensi:
-[[1] Harvard Business Review: The Value of Keeping the Right Customers.](https://hbr.org/2014/10/the-value-of-keeping-the-right-customers)
-[[2]A Study on Use of Predictive Analytics to Reduce Customer Churn in Telecommunication Industry](https://www.sdmimd.ac.in/marketingconference2024/papers/IMC2467.pdf)
+
+- [[1] Harvard Business Review: The Value of Keeping the Right Customers.](https://hbr.org/2014/10/the-value-of-keeping-the-right-customers)
+- [[2]A Study on Use of Predictive Analytics to Reduce Customer Churn in Telecommunication Industry](https://www.sdmimd.ac.in/marketingconference2024/papers/IMC2467.pdf)
 
 ## Business Understanding
 
@@ -166,7 +167,7 @@ One-Hot Encoding diterapkan pada fitur kategorikal menggunakan OneHotEncoder. Pr
 
 2. Dimensionality Reduction dengan PCA
 Principal Component Analysis (PCA) digunakan untuk mereduksi dimensi dari fitur numerik. Setelah di-scaling, fitur-fitur numerik dikurangi menjadi dua komponen utama.
-![PCA]()
+![PCA](https://github.com/Mnjar/bank-churn-rate-analysis/blob/main/images/PCA.png?raw=true)
 Dua komponen ini menjelaskan 100% dari variansi data, yang berarti seluruh informasi yang relevan dari fitur asli dipertahankan dalam dua dimensi ini. Hal ini penting untuk mempercepat proses pelatihan model dan mengurangi risiko overfitting pada data yang memiliki banyak fitur.
 Teknik ini dipilih karena hasil analisis variansi kumulatif menunjukkan bahwa dua komponen utama dapat menjelaskan semua variansi dalam data, sehingga merupakan pilihan optimal untuk menjaga kesederhanaan tanpa kehilangan informasi yang penting.
 
