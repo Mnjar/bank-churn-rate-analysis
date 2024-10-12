@@ -86,6 +86,7 @@ Selanjutnya uraikanlah seluruh variabel atau fitur pada data. Sebagai contoh:
 Pada dataset ini, label `Not Churn` lebih banyak dibandingkan label `Churn`. Ini berarti data untuk kolom `Exited` memiliki distribusi yang tidak seimbang, distribusi label dapat dilihat pada gambar di bawah ini.
 
 ![Distribusi churn](https://github.com/Mnjar/bank-churn-rate-analysis/blob/main/images/univariate-analysis/churn-vs-not-churn.png?raw=true)
+
 Maka, pada saat pemodelan, resampling techniques seperti SMOTE atau undersampling akan digunakan agar model tidak overfit atau bias.
 
 Selanjutnya, berikut visualisasi histogram dan kde plot dari fitur numerik.
@@ -106,12 +107,14 @@ Berikut poin-poin penting yang dapat diambil dari 2 plot di atas.
 Distribusi pelanggan yang memiliki kartu kredit, status keaktifan pelanggan dapat dilihat pada gambar berikut.
 
 ![Has CrCard & Membership](https://github.com/Mnjar/bank-churn-rate-analysis/blob/main/images/univariate-analysis/pie-hscard-activemember.png?raw=true)
+
 Sebanyak 70.5% pelanggan memiliki credit card, dan distribusi member aktif dan tidak aktif hampir seimbang.
 
 Selanjutnya, lihat distibusi geografi dan gender berikut.
 
 ![Pie Geography](https://github.com/Mnjar/bank-churn-rate-analysis/blob/main/images/univariate-analysis/pie-geo.png?raw=true)
 ![Pie Gender](https://github.com/Mnjar/bank-churn-rate-analysis/blob/main/images/univariate-analysis/pie-gender.png?raw=true)
+
 Pelanggan terbanyak berasal dari France yaitu sebesar 50%, diikuti Germany dan Spain. Lalu, sebanyak 54.6% pelanggan adalah pria, sisanya wanita
 
 ### Multivariate Analysis
@@ -166,10 +169,11 @@ Scaling diterapkan pada fitur numerik menggunakan StandardScaler. Proses ini mem
 One-Hot Encoding diterapkan pada fitur kategorikal menggunakan OneHotEncoder. Proses ini mengubah variabel kategorikal menjadi representasi numerik yang dapat digunakan oleh model.
 
 2. Dimensionality Reduction dengan PCA
-Principal Component Analysis (PCA) digunakan untuk mereduksi dimensi dari fitur numerik. Setelah di-scaling, fitur-fitur numerik dikurangi menjadi dua komponen utama.
-![PCA](https://github.com/Mnjar/bank-churn-rate-analysis/blob/main/images/PCA.png?raw=true)
-Dua komponen ini menjelaskan 100% dari variansi data, yang berarti seluruh informasi yang relevan dari fitur asli dipertahankan dalam dua dimensi ini. Hal ini penting untuk mempercepat proses pelatihan model dan mengurangi risiko overfitting pada data yang memiliki banyak fitur.
-Teknik ini dipilih karena hasil analisis variansi kumulatif menunjukkan bahwa dua komponen utama dapat menjelaskan semua variansi dalam data, sehingga merupakan pilihan optimal untuk menjaga kesederhanaan tanpa kehilangan informasi yang penting.
+    Principal Component Analysis (PCA) digunakan untuk mereduksi dimensi dari fitur numerik. Setelah di-scaling, fitur-fitur numerik dikurangi menjadi dua komponen utama.
+    ![PCA](https://github.com/Mnjar/bank-churn-rate-analysis/blob/main/images/PCA.png?raw=true)
+
+    Dua komponen ini menjelaskan 100% dari variansi data, yang berarti seluruh informasi yang relevan dari fitur asli dipertahankan dalam dua dimensi ini. Hal ini penting untuk mempercepat proses pelatihan model dan mengurangi risiko overfitting pada data yang memiliki banyak fitur.
+    Teknik ini dipilih karena hasil analisis variansi kumulatif menunjukkan bahwa dua komponen utama dapat menjelaskan semua variansi dalam data, sehingga merupakan pilihan optimal untuk menjaga kesederhanaan tanpa kehilangan informasi yang penting.
 
 3. Handling Imbalance Data dengan SMOTE:
 Setelah preprocessing, diterapkan teknik Synthetic Minority Over-sampling Technique (SMOTE) untuk menangani masalah ketidakseimbangan kelas pada target variabel Exited. SMOTE membuat contoh sintetik dari kelas minoritas (Churned) untuk meningkatkan proporsi data minoritas sehingga model dapat lebih seimbang dalam belajar dari kedua kelas. Ini dilakukan untuk meningkatkan kinerja model klasifikasi terutama dalam mengidentifikasi kelas minoritas dengan lebih baik.
