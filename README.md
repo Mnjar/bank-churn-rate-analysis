@@ -29,7 +29,7 @@ Proyek ini bertujuan untuk membangun model machine learning yang dapat mempredik
 
 ### Goals
 
-1. Mengembangkan model prediksi yang dapat memisahkan pelanggan yang berisiko meninggalkan layanan (churn) dan pelanggan yang tetap setia dengan menggunakan variabel yang relevan.
+1. Mengembangkan model machine learning atau model prediksi yang dapat memisahkan pelanggan yang berisiko meninggalkan layanan (churn) dan pelanggan yang tetap setia dengan menggunakan variabel yang relevan.
 
 2. Mengidentifikasi variabel penting yang berkontribusi pada churn pelanggan.
 
@@ -39,7 +39,7 @@ Proyek ini bertujuan untuk membangun model machine learning yang dapat mempredik
 
 Untuk mencapai tujuan-tujuan tersebut, berikut beberapa solusi yang berbasis pada model machine learning yang diterapkan:
 
-1. Menggunakan model regresi, ensemble learning berbasis decision tree dan boosting, support vector classifier, model berbasis Jarak (Instance-Based Learning), dan nural network untuk membandingkan akurasi prediksi churn pelanggan.
+1. Menggunakan model regresi, ensemble learning berbasis decision tree dan boosting, support vector classifier, model berbasis jarak (Instance-Based Learning), dan nural network untuk membandingkan akurasi prediksi churn pelanggan.
 2. Mengimplementasikan PCA untuk reduksi dimensi dan SMOTE untuk menangani class imbalance
 
 Model-model ini akan diuji menggunakan metrik evaluasi yang relevan seperti akurasi, precision, recall, F1 score, dan ROC-AUC.
@@ -287,5 +287,12 @@ Setelah menerapkan beberapa model machine learning dan mengevaluasinya dengan me
 - ROC-AUC model Gradient Boosting mencapai nilai 0.806475, menunjukkan bahwa model memiliki kemampuan yang baik dalam membedakan antara nasabah yang churn dan tidak churn.
 Akurasi model Gradient Boosting adalah 0.776733, menunjukkan bahwa 77.7% dari seluruh prediksi model adalah benar, baik untuk kelas positif maupun negatif.
 
-**Kesimpulan**:
-Berdasarkan metrik evaluasi yang digunakan, Gradient Boosting terbukti menjadi model yang paling efektif untuk mendeteksi churn dalam proyek ini. Metrik yang dipilih—Precision, Recall, F1 Score, ROC-AUC, dan Akurasi—memberikan gambaran yang komprehensif tentang kinerja model dalam konteks data yang tidak seimbang, sehingga hasilnya dapat diandalkan untuk implementasi strategi retensi pelanggan di masa depan.
+### Kesimpulan
+
+Tahapan pemrosesan data terbukti efektif dalam menanangi ketidakseimbangan kelas pada data. Selain itu, variabel-variabel penting berhasil diketahui dengan cara menggunakan fungsi pairplot dan correlation matrix, untuk menggambarkan hubungan berpasangan pada suatu himpunan data.
+
+Berdasarkan metrik evaluasi yang digunakan, Gradient Boosting terbukti menjadi model yang paling efektif untuk mendeteksi churn dalam proyek ini. Metrik yang dipilih—Precision, Recall, F1 Score, ROC-AUC, dan Akurasi—memberikan gambaran yang komprehensif tentang kinerja model terhadapt data yang ada.
+
+Model `Gradient Boosting Classifier` dipilih sebagai model terbaik untuk prediksi churn pelanggan. Dalam konteks bisnis, model ini akan memberikan dampak yang signifikan dalam membantu bank mengidentifikasi pelanggan yang berisiko churn, memungkinkan mereka untuk mengambil tindakan preventif guna meningkatkan retensi pelanggan. Bank dapat mengalokasikan sumber daya mereka secara lebih efisien, fokus pada nasabah yang rentan meninggalkan layanan, dan meningkatkan kepuasan mereka.
+
+Dengan menggunakan prediksi churn ini, perusahaan dapat mengembangkan strategi retensi yang lebih efektif, mengoptimalkan sumber daya mereka, dan meningkatkan loyalitas pelanggan.

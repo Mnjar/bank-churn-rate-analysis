@@ -3,9 +3,6 @@
 
 # # Churn Rate Analysis Bank Customer
 # ----
-# - **Nama:** Muhamad Fajar Faturohman
-# - **Email:** fajarftr2605@gmail.com
-# - **ID Dicoding:** mnjarrr
 
 # In[1]:
 
@@ -35,13 +32,13 @@ from sklearn.preprocessing import StandardScaler
 
 # # Load Dataset
 
-# In[7]:
+# In[2]:
 
 
 data = pd.read_csv('../dataset/Churn_Modelling.csv')
 
 
-# In[8]:
+# In[3]:
 
 
 data.shape
@@ -49,7 +46,7 @@ data.shape
 
 # Dataset ini memiliki 14 kolom dengan 10.000 baris
 
-# In[9]:
+# In[4]:
 
 
 data.head()
@@ -57,7 +54,7 @@ data.head()
 
 # Drop kolom `RowNumber`, karena ini tidak diperlukan
 
-# In[10]:
+# In[5]:
 
 
 data = data.drop('RowNumber', axis=1)
@@ -101,7 +98,7 @@ data = data.drop('RowNumber', axis=1)
 data.info()
 
 
-# In[12]:
+# In[6]:
 
 
 # Memisahkan categorical, numerical, dan target features
@@ -386,7 +383,7 @@ for feature in numerical_features:
 
 # Pada boxplot di atas terdapat beberapa outliers pada fitur numerik. Outlier pada data `Age` akan ditangani karena analisis akan berfokus pada pelanggan dengan usia 20 sampai 60 tahun, dan pelanggan di atas rentang tersebut cukup sedikit, bisa dilihat pada plot [KDE](#kde-plot) di atas. Outlier juga terdapat pada variabel `CreditScore`, dan satu titik outlier terdapat pada variabel `NumOfProducts`.
 
-# In[24]:
+# In[7]:
 
 
 # Menghitung Q1 (kuartil pertama) dan Q3 (kuartil ketiga)
@@ -404,7 +401,7 @@ upper_bound = Q3 + 1.5 * IQR
 data = data[~((data[numerical_features] < lower_bound) | (data[numerical_features] > upper_bound)).any(axis=1)]
 
 
-# In[25]:
+# In[8]:
 
 
 data.shape
@@ -456,9 +453,66 @@ plt.show()
 # ## Data Preparation
 # Variabel yang akan diaplikasikan untuk reduksi dengan PCA yaitu `Age`, `EstimatedSalary`, `CreditScore`, `Balance`, `NumOfProducts`, `Tenure`.
 
+# Beberapa tahap yang dilakukan pada data preparation diantaranya adalah Data Splitting, Scaling dan Encoding, SMOTE (Oversampling Kelas Minoritas), dan PCA (Dimensionality reduction).
+
+# ### Data Splitting
+
+# Lakukan data splitting menjadi train dan test dengan pembagian 70% untuk data training, dan 30% untuk data testing.
+
+# In[9]:
+
+
+X = data.drop(columns=[target, 'CustomerId', 'Surname'])
+y = data[target]
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+
+# ### Scaling dan Encoding
+
+# Lakukan scaling untuk fitur numerik dan encoding untuk fitur kategorikal, karena model machine learning memerlukan data dalam bentuk numerik dan skala yang seragam.
+
+# In[10]:
+
+
+# Preprocessor
+scaler = StandardScaler()
+encoder = OneHotEncoder(drop='first')
+
+# Preprocessing pipeline: Scaling + Encoding
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', scaler, numerical_features),
+        ('cat', encoder, categorical_features)
+    ]
+)
+# Apply preprocessing pada train dan test data
+X_train_preprocessed = preprocessor.fit_transform(X_train)
+X_test_preprocessed = preprocessor.transform(X_test)
+
+
+# Karena proporsi data `Churn` dan `Not Churn` pada variabel `Exited` tidak seimbang, teknik oversampling dengan SMOTE akan digunakan untuk menangani masalah ketidakseimbangan kelas pada target variabel.
+
+# ### SMOTE (Oversampling Kelas Minoritas)
+
+# Terapkan SMOTE pada data yang sudah di-preprocess (termasuk scaling dan encoding). Ini memastikan bahwa kelas minoritas ditangani dengan baik sebelum dilakukan reduksi dimensi dengan PCA.
+
+# In[11]:
+
+
+# Apply SMOTE setelah preprocessing
+smote = SMOTE(random_state=42)
+X_train_resampled, y_train_resampled = smote.fit_resample(X_train_preprocessed, y_train)
+
+
 # ### Dimensionality Reduction With PCA 
 
-# In[26]:
+# Setelah SMOTE, lakukan PCA untuk mereduksi dimensi, sehingga ini akan tetap mempertahankan variasi informasi sebanyak mungkin selama proses oversampling.
+# 
+# Pertama, cek terlebih dahulu berapa komponen yang dapat menjelaskan variansi data sebanyak minimal 90%.
+
+# In[12]:
 
 
 # Fungsi untuk plotting variansi kumulatif dan PCA
@@ -482,44 +536,18 @@ def plot_pca_variance(X_scaled):
         print(f"Component {i+1}: {var:.4f} variance explained")
 
 
-# In[27]:
+# In[13]:
 
 
 pca = plot_pca_variance(data[numerical_features])
 
 
 # Component 1 menjelaskan 54.11% dari variansi, dan Component 2 menjelaskan total 100% (termasuk variansi dari Component 1). Ini menunjukkan bahwa dengan dua komponen pertama, sudah menjelaskan 100% dari variansi data.
+# 
+# Maka komponen yang akan digunakan pada PCA adalah sebanyak 2 komponen.
 
-# Karena proporsi data `Churn dan Not Churn` pada variabel `Exited` tidak seimbang, teknik oversampling dengan SMOTE akan digunakan untuk menangani masalah ketidakseimbangan kelas pada target variabel.
+# In[14]:
 
-# In[28]:
-
-
-# Preprocessor
-scaler = StandardScaler()
-encoder = OneHotEncoder(drop='first')
-
-# Preprocessing pipeline: Scaling + Encoding
-preprocessor = ColumnTransformer(
-    transformers=[
-        ('num', scaler, numerical_features),
-        ('cat', encoder, categorical_features)
-    ]
-)
-
-X = data.drop(columns=[target, 'CustomerId', 'Surname'])
-y = data[target]
-
-# Split data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-
-# Apply preprocessing pada train dan test data
-X_train_preprocessed = preprocessor.fit_transform(X_train)
-X_test_preprocessed = preprocessor.transform(X_test)
-
-# Apply SMOTE setelah preprocessing
-smote = SMOTE(random_state=42)
-X_train_resampled, y_train_resampled = smote.fit_resample(X_train_preprocessed, y_train)
 
 # Setelah SMOTE, lakukan PCA
 pca = PCA(n_components=2)
@@ -527,29 +555,67 @@ X_train_pca = pca.fit_transform(X_train_resampled)
 X_test_pca = pca.transform(X_test_preprocessed)
 
 
-# ## Modeling & Evaluation
+# Data yang akan digunakan pada tahap modeling adalah variabel `X_train_pca`, dan `X_test_pca`.
+
+# ## Modeling
 
 # Model yang digunakan adalah:
-# - Logistic Regression
-# - Random Forest Classifier
-# - Gradient Boosting Classifier
-# - Support Vector Classifier (SVC)
-# - K-Nearest Neighbors Classifier (KNN)
-# - XGBoost Classifier
-# - MLPClassifier (Multilayer Perceptron)
+# - `Logistic Regression`: Model ini mengukur hubungan antara fitur dan target menggunakan fungsi logistik, menghasilkan probabilitas untuk klasifikasi biner.
+#     
+#     Parameter:
+#     - `C`=1: Mengontrol tingkat regularisasi untuk mencegah overfitting.
+#     - `max_iter`=100: Batas jumlah iterasi optimasi.
+#     - `penalty`='l2': Tipe regularisasi yang digunakan.
+#     - `solver`='saga': Metode optimasi untuk mengatasi dataset besar.
 # 
-# Metrik evaluasi yang digunakan adalah sebagai berikut.
-# - Precision: Precision mengukur proporsi prediksi positif yang benar dari seluruh prediksi positif yang dilakukan oleh model.
+# - `Random Forest Classifier`: Algoritma ensemble yang membangun beberapa decision trees dan menggabungkan prediksi untuk meningkatkan akurasi.
 # 
-# - Recall: Metrik ini digunakan untuk mengetahui seberapa baik model dalam mendeteksi kelas positif (sangat penting jika Anda menginginkan model yang bagus dalam menangkap positif).
+#     Parameter:
+#     - `n_estimators`=100: Jumlah pohon dalam hutan.
+#     - `max_depth`=10: Batas kedalaman pohon untuk mengontrol overfitting.
+#     - `min_samples_split`=2: Jumlah minimum sampel untuk membagi node.
 # 
-# - F1-Score: Ini adalah rata-rata harmonik dari Precision dan Recall, digunakan untuk menyeimbangkan keduanya, terutama pada dataset yang tidak seimbang.
+# - `Gradient Boosting Classifier`: Algoritma boosting yang membangun pohon keputusan secara bertahap, di mana setiap pohon baru mencoba memperbaiki kesalahan dari pohon sebelumnya.
 # 
-# - ROC-AUC: Metrik ini mengukur seberapa baik model dapat membedakan antara kelas positif dan negatif secara keseluruhan. AUC (Area Under Curve) dari ROC (Receiver Operating Characteristic) lebih tinggi berarti model lebih baik dalam diskriminasi.
+#     Parameter:
+#     - `loss`='log_loss': Fungsi kerugian yang digunakan.
+#     - `learning_rate`=0.1: Kecepatan pembelajaran.
+#     - `max_depth`=3: Batas kedalaman pohon untuk mengontrol overfitting.
+#     - `n_estimators`=200: Jumlah pohon yang digunakan.
 # 
-# - Accuracy: Akurasi mengukur proporsi prediksi yang benar (positif dan negatif) dari seluruh prediksi yang dilakukan oleh model.
+# - `Support Vector Classifier (SVC)`: SVC mencari hyperplane optimal yang memisahkan dua kelas dengan margin maksimal.
+# 
+#     Parameter:
+#     - `C`=1: Parameter regularisasi untuk menghindari overfitting.
+#     - `kernel`='rbf': Fungsi kernel untuk menangani data non-linear.
+#     - `gamma`='scale': Skala untuk kernel RBF.
+#     - `probability`=True: flag (nilai boolean True atau False) yang menentukan apakah model akan menghitung probabilitas prediksi kelas atau tidak.
+# 
+# - `K-Nearest Neighbors Classifier (KNN)`: KNN mengklasifikasikan sampel berdasarkan mayoritas kelas dari k tetangga terdekatnya.
+# 
+#     Parameter:
+#     - `n_neighbors`=9: Jumlah tetangga yang dipertimbangkan.
+#     - `algorithm`='auto': Algoritma yang digunakan untuk menemukan tetangga terdekat.
+#     - `weights`='uniform': Menentukan cara kontribusi tetangga-tetangga terdekat (neighbors) dalam penentuan prediksi.
+# 
+# - `XGBoost Classifier`: Algoritma boosting yang dioptimalkan untuk efisiensi dan performa, membangun pohon keputusan bertahap untuk meminimalkan kesalahan.
+# 
+#     Parameter:
+#     - `objective`='binary:logistic': Tipe tugas untuk klasifikasi biner.
+#     - `colsample_bytree`=0.8: Proporsi fitur yang digunakan untuk setiap pohon.
+#     - `learning_rate`=0.1: Kecepatan pembelajaran.
+#     - `max_depth`=7: Batas kedalaman pohon untuk mengontrol overfitting.
+#     - `n_estimators`=200: Jumlah pohon yang digunakan.
+# 
+# - `MLPClassifier (Multilayer Perceptron)`: Jaringan saraf tiruan dengan lapisan tersembunyi yang memungkinkan model untuk menangkap pola non-linear.
+# 
+#     Parameter:
+#     - `max_iter`=700: Jumlah iterasi maksimum.
+#     - `activation`='tanh': Fungsi aktivasi yang digunakan.
+#     - `hidden_layer_sizes`=(100,): Jumlah neuron di lapisan tersembunyi.
+#     - `solver`='adam': metode optimasi.
 
-# In[46]:
+# In[15]:
 
 
 # List Model
@@ -562,6 +628,21 @@ models = {
     'XGBoost': XGBClassifier(objective='binary:logistic', colsample_bytree=0.8, gamma=1.0, learning_rate=0.1, max_depth=7, n_estimators=200, random_state=42),
     'MLPClassifier': MLPClassifier(max_iter=700, activation='tanh', alpha=0.01, hidden_layer_sizes=(100,), solver='adam', random_state=42)
 }
+
+
+# Metrik evaluasi yang digunakan adalah sebagai berikut.
+# - Precision: Precision mengukur proporsi prediksi positif yang benar dari seluruh prediksi positif yang dilakukan oleh model.
+# 
+# - Recall: Metrik ini digunakan untuk mengetahui seberapa baik model dalam mendeteksi kelas positif (sangat penting jika Anda menginginkan model yang bagus dalam menangkap positif).
+# 
+# - F1-Score: Ini adalah rata-rata harmonik dari Precision dan Recall, digunakan untuk menyeimbangkan keduanya, terutama pada dataset yang tidak seimbang.
+# 
+# - ROC-AUC: Metrik ini mengukur seberapa baik model dapat membedakan antara kelas positif dan negatif secara keseluruhan. AUC (Area Under Curve) dari ROC (Receiver Operating Characteristic) lebih tinggi berarti model lebih baik dalam diskriminasi.
+# 
+# - Accuracy: Akurasi mengukur proporsi prediksi yang benar (positif dan negatif) dari seluruh prediksi yang dilakukan oleh model.
+
+# In[16]:
+
 
 # result DataFrame 
 results_df = pd.DataFrame(columns=['Model', 'Precision', 'Recall', 'F1 Score', 'Accuracy', 'ROC-AUC'])
@@ -602,13 +683,15 @@ for name, model in models.items():
     results_df = pd.concat([results_df, new_row], ignore_index=True)
 
 
-# In[50]:
+# ## Evaluation
+
+# In[17]:
 
 
 results_df
 
 
-# In[54]:
+# In[18]:
 
 
 def plot_best_model_comparison(metrics, values, models, title):
@@ -653,10 +736,11 @@ def plot_best_model_comparison(metrics, values, models, title):
     plt.show()
 
 
-# In[55]:
+# Ambil model terbaik berdasarkan Recall, F1-Score, ROC-AUC dan Accuracy.
+
+# In[20]:
 
 
-# Ambil model terbaik berdasarkan Recall, F1-Score, dan ROC-AUC dari dataset dengan Tenure
 best_accuracy = results_df.loc[results_df['Accuracy'].idxmax()]
 best_precission = results_df.loc[results_df['Precision'].idxmax()]
 best_recall= results_df.loc[results_df['Recall'].idxmax()]
@@ -665,7 +749,7 @@ best_roc_auc = results_df.loc[results_df['ROC-AUC'].idxmax()]
 
 # Data untuk plotting
 metrics = ['Accuracy', 'precission', 'Recall', 'F1 Score', 'ROC-AUC']
-values_with_tenure = [
+values = [
     best_accuracy['Accuracy'], 
     best_precission['Precision'], 
     best_recall['Recall'], 
@@ -673,8 +757,8 @@ values_with_tenure = [
     best_roc_auc['ROC-AUC']
 ]
 
-# Nama model terbaik untuk setiap metrik
-models_with_tenure = [
+# model terbaik untuk setiap metrik
+best_model = [
     best_accuracy['Model'],
     best_precission['Model'],
     best_recall['Model'], 
@@ -682,7 +766,7 @@ models_with_tenure = [
     best_roc_auc['Model']
 ]
 
-plot_best_model_comparison(metrics, values_with_tenure, models_with_tenure, title='Best Model')
+plot_best_model_comparison(metrics, values, best_model, title='Best Model')
 
 
 # Berdasarkan data di atas, model dengan metrik evaluasi terbaik adalah Gradient Boosting. Maka, model Gradient dapat dipilih karena memiliki score evaluasi terbaik karena memiliki skor akurasi terbaik dibanding model lainnya pada semua metrik evaluasi, berikut detailnya:
@@ -694,3 +778,11 @@ plot_best_model_comparison(metrics, values_with_tenure, models_with_tenure, titl
 # - Robustness terhadap Data Tidak Seimbang: Gradient Boosting dapat menangani masalah data tidak seimbang dengan lebih baik dibandingkan model lainnya, menjadikannya pilihan yang tepat untuk kasus ini.
 # 
 # Dengan demikian, Gradient Boosting dipilih sebagai model terbaik untuk digunakan dalam prediksi churn, karena kemampuannya yang superior dalam semua aspek evaluasi dan relevansi terhadap masalah yang dihadapi.
+
+# ## Conclussion
+
+# Tahapan pemrosesan data terbukti efektif dalam menanangi ketidakseimbangan kelas pada data. Selain itu, variabel-variabel penting berhasil diketahui dengan cara menggunakan fungsi pairplot dan correlation matrix, untuk menggambarkan hubungan berpasangan pada suatu himpunan data.
+# 
+# Model `Gradient Boosting Classifier` dipilih sebagai model terbaik untuk prediksi churn pelanggan. Dalam konteks bisnis, model ini akan memberikan dampak yang signifikan dalam membantu bank mengidentifikasi pelanggan yang berisiko churn, memungkinkan mereka untuk mengambil tindakan preventif guna meningkatkan retensi pelanggan. Bank dapat mengalokasikan sumber daya mereka secara lebih efisien, fokus pada nasabah yang rentan meninggalkan layanan, dan meningkatkan kepuasan mereka.
+# 
+# Dengan menggunakan prediksi churn ini, perusahaan dapat mengembangkan strategi retensi yang lebih efektif, mengoptimalkan sumber daya mereka, dan meningkatkan loyalitas pelanggan.
