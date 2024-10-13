@@ -557,70 +557,104 @@ X_test_pca = pca.transform(X_test_preprocessed)
 
 # Data yang akan digunakan pada tahap modeling adalah variabel `X_train_pca`, dan `X_test_pca`.
 
-# ## Modeling
+# ## Modeling Development
 
 # Model yang digunakan adalah:
-# - `Logistic Regression`: Model ini mengukur hubungan antara fitur dan target menggunakan fungsi logistik, menghasilkan probabilitas untuk klasifikasi biner.
+# - `Logistic Regression`: 
+# 
+#     Cara kerja:
+#     
+#     Logistic Regression memprediksi probabilitas suatu kelas (dalam hal ini churn atau tidak churn) dengan menggunakan fungsi logistik atau sigmoid. Model ini mengasumsikan hubungan linier antara variabel independen (fitur) dan variabel dependen (target). Hasil prediksi probabilitas kemudian diubah menjadi label biner (0 atau 1) berdasarkan threshold tertentu (umumnya 0.5).
 #     
 #     Parameter:
-#     - `C`=1: Mengontrol tingkat regularisasi untuk mencegah overfitting.
-#     - `max_iter`=100: Batas jumlah iterasi optimasi.
-#     - `penalty`='l2': Tipe regularisasi yang digunakan.
-#     - `solver`='saga': Metode optimasi untuk mengatasi dataset besar.
+#     - `C` = 1 -> Mengontrol tingkat regularisasi untuk mencegah overfitting.
+#     - `max_iter` = 100 -> Batas jumlah iterasi optimasi.
+#     - `penalty` = 'l2' -> Regularisasi L2 untuk mengurangi kompleksitas model.
+#     - `solver` = 'saga' -> Metode optimasi untuk mengatasi dataset besar.
+#     - `random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
 # 
-# - `Random Forest Classifier`: Algoritma ensemble yang membangun beberapa decision trees dan menggabungkan prediksi untuk meningkatkan akurasi.
+# - `Random Forest Classifier`: 
 # 
-#     Parameter:
-#     - `n_estimators`=100: Jumlah pohon dalam hutan.
-#     - `max_depth`=10: Batas kedalaman pohon untuk mengontrol overfitting.
-#     - `min_samples_split`=2: Jumlah minimum sampel untuk membagi node.
+#     Cara kerja:
 # 
-# - `Gradient Boosting Classifier`: Algoritma boosting yang membangun pohon keputusan secara bertahap, di mana setiap pohon baru mencoba memperbaiki kesalahan dari pohon sebelumnya.
+#     Random Forest adalah algoritma ensemble yang membangun beberapa pohon keputusan independen dan menggabungkan hasil prediksinya untuk membuat keputusan akhir. Setiap pohon dibangun dari subset acak dari fitur dan sampel data, yang membantu mengurangi varians dan meningkatkan generalisasi model.
 # 
 #     Parameter:
-#     - `loss`='log_loss': Fungsi kerugian yang digunakan.
-#     - `learning_rate`=0.1: Kecepatan pembelajaran.
-#     - `max_depth`=3: Batas kedalaman pohon untuk mengontrol overfitting.
-#     - `n_estimators`=200: Jumlah pohon yang digunakan.
+#     - `n_estimators` = 100 -> Jumlah pohon dalam keputusan.
+#     - `max_depth` = 10 -> Batas kedalaman pohon untuk mengontrol overfitting.
+#     - `min_samples_split` = 2 -> Jumlah minimum sampel untuk membagi node.
+#     - `random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
 # 
-# - `Support Vector Classifier (SVC)`: SVC mencari hyperplane optimal yang memisahkan dua kelas dengan margin maksimal.
+# - `Gradient Boosting Classifier`: 
 # 
-#     Parameter:
-#     - `C`=1: Parameter regularisasi untuk menghindari overfitting.
-#     - `kernel`='rbf': Fungsi kernel untuk menangani data non-linear.
-#     - `gamma`='scale': Skala untuk kernel RBF.
-#     - `probability`=True: flag (nilai boolean True atau False) yang menentukan apakah model akan menghitung probabilitas prediksi kelas atau tidak.
+#     Cara kerja:
 # 
-# - `K-Nearest Neighbors Classifier (KNN)`: KNN mengklasifikasikan sampel berdasarkan mayoritas kelas dari k tetangga terdekatnya.
+#     Gradient Boosting bekerja dengan membangun pohon keputusan secara bertahap, di mana setiap pohon baru mencoba memperbaiki kesalahan dari pohon sebelumnya. Setiap iterasi mencoba mengurangi kesalahan residu dengan cara memprediksi kesalahan dari prediksi sebelumnya dan menambahkannya ke prediksi akhir.
 # 
 #     Parameter:
-#     - `n_neighbors`=9: Jumlah tetangga yang dipertimbangkan.
-#     - `algorithm`='auto': Algoritma yang digunakan untuk menemukan tetangga terdekat.
-#     - `weights`='uniform': Menentukan cara kontribusi tetangga-tetangga terdekat (neighbors) dalam penentuan prediksi.
+#     - `loss` = 'log_loss' -> Fungsi kerugian yang digunakan untuk optimasi.
+#     - `learning_rate` = 0.1 -> Kecepatan pembelajaran.
+#     - `max_depth` = 3 -> Batas kedalaman pohon untuk mengontrol overfitting.
+#     - `n_estimators` = 200 -> Jumlah pohon yang digunakan.
+#     - `random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
 # 
-# - `XGBoost Classifier`: Algoritma boosting yang dioptimalkan untuk efisiensi dan performa, membangun pohon keputusan bertahap untuk meminimalkan kesalahan.
+# - `Support Vector Classifier (SVC)`:
 # 
-#     Parameter:
-#     - `objective`='binary:logistic': Tipe tugas untuk klasifikasi biner.
-#     - `colsample_bytree`=0.8: Proporsi fitur yang digunakan untuk setiap pohon.
-#     - `learning_rate`=0.1: Kecepatan pembelajaran.
-#     - `max_depth`=7: Batas kedalaman pohon untuk mengontrol overfitting.
-#     - `n_estimators`=200: Jumlah pohon yang digunakan.
+#     Cara kerja:
 # 
-# - `MLPClassifier (Multilayer Perceptron)`: Jaringan saraf tiruan dengan lapisan tersembunyi yang memungkinkan model untuk menangkap pola non-linear.
+#     SVC mencari hyperplane optimal yang memisahkan dua kelas dengan margin maksimal. Dengan menggunakan kernel, SVC dapat memetakan data yang tidak terpisahkan secara linear ke dimensi yang lebih tinggi agar dapat dipisahkan. SVC cocok untuk kasus klasifikasi biner dengan margin yang jelas antara kelas.
 # 
 #     Parameter:
-#     - `max_iter`=700: Jumlah iterasi maksimum.
-#     - `activation`='tanh': Fungsi aktivasi yang digunakan.
-#     - `hidden_layer_sizes`=(100,): Jumlah neuron di lapisan tersembunyi.
-#     - `solver`='adam': metode optimasi.
+#     - `C` = 1 -> Parameter regularisasi yang menentukan keseimbangan antara margin yang lebar dan kesalahan klasifikasi.
+#     - `kernel` = 'rbf' -> Kernel Radial Basis Function untuk menangani data yang tidak linier.
+#     - `gamma` = 'scale' -> Skala untuk kernel RBF yang mengontrol pengaruh titik data tunggal.
+#     - `probability` = True -> flag (nilai boolean True atau False) yang menentukan apakah model akan menghitung probabilitas prediksi kelas atau tidak.
+#     - `random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
+# 
+# - `K-Nearest Neighbors Classifier (KNN)`:
+# 
+#     Cara kerja:
+# 
+#     KNN mengklasifikasikan sampel berdasarkan kelas mayoritas dari k tetangga terdekat. KNN adalah algoritma instance-based learning di mana sampel baru diklasifikasikan dengan menghitung jarak ke sampel yang sudah dikenal, dan kelas yang paling umum di antara tetangga tersebut akan dipilih sebagai prediksi.
+# 
+#     Parameter:
+#     - `n_neighbors` = 9 -> Jumlah tetangga yang dipertimbangkan.
+#     - `algorithm` = 'auto' -> Algoritma yang digunakan untuk menemukan tetangga terdekat.
+#     - `weights` = 'uniform' -> Menentukan cara kontribusi tetangga-tetangga terdekat (neighbors) dalam penentuan prediksi.
+# 
+# - `XGBoost Classifier`:
+# 
+#     Cara kerja:
+# 
+#     XGBoost adalah algoritma boosting yang dirancang untuk efisiensi dan performa tinggi. Sama seperti Gradient Boosting, ia membangun pohon keputusan secara bertahap. Namun, XGBoost lebih dioptimalkan untuk menangani outliers dan overfitting dengan penggunaan regulasi tambahan, penanganan missing data, dan paralelisme.
+# 
+#     Parameter:
+#     - `objective` = 'binary:logistic' -> Tipe tugas untuk klasifikasi biner.
+#     - `colsample_bytree` = 0.8 -> Proporsi fitur yang digunakan untuk setiap pohon.
+#     - `learning_rate` = 0.1 -> Kecepatan pembelajaran.
+#     - `max_depth` = 7 -> Batas kedalaman pohon untuk mengontrol overfitting.
+#     - `n_estimators` = 200 -> Jumlah pohon yang digunakan.
+#     - `random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
+# 
+# - `MLPClassifier (Multilayer Perceptron)`: 
+# 
+#     Cara kerja:
+# 
+#     MLPClassifier adalah jaringan saraf tiruan (artificial neural network) yang terdiri dari lapisan input, lapisan tersembunyi, dan lapisan output. Setiap neuron pada lapisan tersembunyi menggunakan fungsi aktivasi untuk memproses data, dan model ini mampu menangkap hubungan non-linear antara fitur. Algoritma ini mempelajari pola kompleks dalam data melalui backpropagation.
+# 
+#     Parameter:
+#     - `max_iter` = 700 -> Jumlah iterasi maksimum.
+#     - `activation` = 'tanh' -> Fungsi aktivasi yang digunakan untuk hidden layer.
+#     - `hidden_layer_sizes` = (100,) -> Jumlah neuron di hidden layer.
+#     - `solver` = 'adam' -> Algoritma optimasi berbasis gradient descent.
+#     - `random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
 
 # In[15]:
 
 
 # List Model
 models = {
-    'Logistic Regression': LogisticRegression(C=1, max_iter=100, penalty='l2', solver='saga', random_state=42),
+    'Logistic Regression': LogisticRegression(C=1, max_iter=100, penalty='l2', solver='saga'),
     'Random Forest': RandomForestClassifier(n_estimators=100, max_depth=10, min_samples_split=2, random_state=42),
     'Gradient Boosting': GradientBoostingClassifier(loss='log_loss', learning_rate=0.1, max_depth=3, n_estimators=200, random_state=42),
     'SVM': SVC(C=1, gamma='scale', kernel='rbf', random_state=42, probability=True),
@@ -779,7 +813,7 @@ plot_best_model_comparison(metrics, values, best_model, title='Best Model')
 # 
 # Dengan demikian, Gradient Boosting dipilih sebagai model terbaik untuk digunakan dalam prediksi churn, karena kemampuannya yang superior dalam semua aspek evaluasi dan relevansi terhadap masalah yang dihadapi.
 
-# ## Conclussion
+# ## Conclusion
 
 # Tahapan pemrosesan data terbukti efektif dalam menanangi ketidakseimbangan kelas pada data. Selain itu, variabel-variabel penting berhasil diketahui dengan cara menggunakan fungsi pairplot dan correlation matrix, untuk menggambarkan hubungan berpasangan pada suatu himpunan data.
 # 
