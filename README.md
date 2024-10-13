@@ -4,7 +4,7 @@
 
 Pentingnya mempertahankan pelanggan dalam industri perbankan sangat krusial, mengingat churn atau hilangnya pelanggan dapat menyebabkan penurunan pendapatan dan biaya tinggi untuk menarik pelanggan baru. Oleh karena itu, memprediksi churn dan memahami perilaku pelanggan menjadi kunci dalam mengambil langkah pencegahan.
 
-Masalah churn perlu diatasi karena dampaknya yang signifikan terhadap profitabilitas. Penelitian menunjukkan bahwa meningkatkan retensi pelanggan sebesar 5% dapat meningkatkan profitabilitas perusahaan antara 25% hingga 95% [[1]]((https://hbr.org/2014/10/the-value-of-keeping-the-right-customers)). Teknologi machine learning dapat membantu bank menganalisis data pelanggan seperti usia, saldo akun, dan riwayat transaksi untuk memprediksi churn dan melakukan intervensi yang tepat.
+Masalah churn perlu diatasi karena dampaknya yang signifikan terhadap profitabilitas. Penelitian menunjukkan bahwa meningkatkan retensi pelanggan sebesar 5% dapat meningkatkan profitabilitas perusahaan antara 25% hingga 95% [[1]](https://hbr.org/2014/10/the-value-of-keeping-the-right-customers). Teknologi machine learning dapat membantu bank menganalisis data pelanggan seperti usia, saldo akun, dan riwayat transaksi untuk memprediksi churn dan melakukan intervensi yang tepat.
 
 Studi terkait dari industri telekomunikasi menunjukkan bahwa penggunaan analitik prediktif membantu mengurangi churn dengan mengintegrasikan model prediksi dalam sistem manajemen hubungan pelanggan, dan perusahaan harus memperhatikan pertimbangan etis terkait privasi dan keamanan data pelanggan serta tantangan seperti kualitas data dan akurasi model [[2]](https://www.sdmimd.ac.in/marketingconference2024/papers/IMC2467.pdf).
 
@@ -195,79 +195,131 @@ Setelah preprocessing, diterapkan teknik Synthetic Minority Over-sampling Techni
 
 Tahapan ini membahas mengenai model machine learning yang digunakan untuk menyelesaikan permasalahan. Pada proyek ini, beberapa algoritma machine learning digunakan untuk menyelesaikan permasalahan prediksi churn pada dataset nasabah. Algoritma yang dipilih memiliki karakteristik yang berbeda-beda, sehingga memungkinkan perbandingan kinerja dari berbagai perspektif. Berikut adalah penjelasan mengenai model-model yang digunakan serta parameter utama, kelebihan, dan kekurangan masing-masing model.
 
-1. Logistic Regression
-**Cara Kerja**: Logistic Regression mengukur hubungan antara fitur dan target menggunakan fungsi logistik untuk menghasilkan probabilitas klasifikasi biner. Model ini memprediksi probabilitas bahwa suatu contoh termasuk dalam kelas positif.
-**Parameter**:
-`C`=1: -> Mengontrol tingkat regularisasi untuk mencegah overfitting.
-`max_iter`=100: -> Batas jumlah iterasi optimasi.
-`penalty`='l2': -> Tipe regularisasi yang digunakan.
-`solver`='saga':-> Metode optimasi untuk mengatasi dataset besar.
-**Kelebihan**: Logistic Regression sederhana dan mudah diinterpretasikan. Algoritma ini bekerja dengan baik ketika hubungan antara fitur dan target linear. Selain itu, Logistic Regression tidak memerlukan tuning yang rumit dan dapat diimplementasikan dengan cepat.
-**Kekurangan**: Logistic Regression tidak bekerja dengan baik pada data yang tidak linear dan sensitif terhadap multikolinearitas. Model ini juga mungkin kurang akurat jika dataset terlalu kompleks.
+- Logistic Regression
 
-2. Random Forest Classifier
-**Cara kerja**: Random Forest adalah algoritma ensemble yang membangun beberapa pohon keputusan independen dan menggabungkan hasil prediksinya untuk membuat keputusan akhir. Setiap pohon dibangun dari subset acak dari fitur dan sampel data, yang membantu mengurangi varians dan meningkatkan generalisasi model.
-**Parameter**:
-`n_estimators` = 100 -> Jumlah pohon dalam keputusan.
-`max_depth` = 10 -> Batas kedalaman pohon untuk mengontrol overfitting.
-`min_samples_split` = 2 -> Jumlah minimum sampel untuk membagi node.
-`random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
-**Kelebihan**: Random Forest sangat baik dalam menangani dataset dengan fitur yang banyak serta secara alami mengatasi overfitting karena melakukan averaging dari beberapa decision trees. Algoritma ini juga robust terhadap data yang tidak seimbang.
-**Kekurangan**: Random Forest dapat menjadi lambat pada dataset yang sangat besar, terutama jika menggunakan banyak pohon. Selain itu, interpretasi dari model ini tidak sesederhana Logistic Regression.
+    **Cara Kerja**: Logistic Regression mengukur hubungan antara fitur dan target menggunakan fungsi logistik untuk menghasilkan probabilitas klasifikasi biner. Model ini memprediksi probabilitas bahwa suatu contoh termasuk dalam kelas positif.
+    **Parameter**:
+    `C`=1: -> Mengontrol tingkat regularisasi untuk mencegah overfitting.
+    `max_iter`=100: -> Batas jumlah iterasi optimasi.
+    `penalty`='l2': -> Tipe regularisasi yang digunakan.
+    `solver`='saga':-> Metode optimasi untuk mengatasi dataset besar.
+    **Kelebihan**: Logistic Regression sederhana dan mudah diinterpretasikan. Algoritma ini bekerja dengan baik ketika hubungan antara fitur dan target linear. Selain itu, Logistic Regression tidak memerlukan tuning yang rumit dan dapat diimplementasikan dengan cepat.
+    **Kekurangan**: Logistic Regression tidak bekerja dengan baik pada data yang tidak linear dan sensitif terhadap multikolinearitas. Model ini juga mungkin kurang akurat jika dataset terlalu kompleks.
 
-3. Gradient Boosting Classifier
-**Cara kerja**: Gradient Boosting bekerja dengan membangun pohon keputusan secara bertahap, di mana setiap pohon baru mencoba memperbaiki kesalahan dari pohon sebelumnya. Setiap iterasi mencoba mengurangi kesalahan residu dengan cara memprediksi kesalahan dari prediksi sebelumnya dan menambahkannya ke prediksi akhir.
-**Parameter**
-`loss` = 'log_loss' -> Fungsi kerugian yang digunakan untuk optimasi.
-`learning_rate` = 0.1 -> Kecepatan pembelajaran.
-`max_depth` = 3 -> Batas kedalaman pohon untuk mengontrol overfitting.
-`n_estimators` = 200 -> Jumlah pohon yang digunakan.
-`random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
-**Kelebihan**: Gradient Boosting adalah salah satu metode ensemble yang sangat powerful, karena menggabungkan beberapa weak learners untuk menghasilkan model yang kuat. Algoritma ini biasanya bekerja sangat baik pada data yang tidak seimbang dan dapat mencapai performa tinggi.
-**Kekurangan**: Gradient Boosting rentan terhadap overfitting jika tidak dikontrol dengan baik. Selain itu, waktu komputasi yang diperlukan relatif lebih lama dibandingkan model lain, terutama pada dataset besar.
+- Random Forest Classifier
 
-4. Support Vector Classifier (SVC)
-**Cara kerja** SVC mencari hyperplane optimal yang memisahkan dua kelas dengan margin maksimal. Dengan menggunakan kernel, SVC dapat memetakan data yang tidak terpisahkan secara linear ke dimensi yang lebih tinggi agar dapat dipisahkan. SVC cocok untuk kasus klasifikasi biner dengan margin yang jelas antara kelas.
-**Parameter**:
-`C` = 1 -> Parameter regularisasi yang menentukan keseimbangan antara margin yang lebar dan kesalahan klasifikasi.
-`kernel` = 'rbf' -> Kernel Radial Basis Function untuk menangani data yang tidak linier.
-`gamma` = 'scale' -> Skala untuk kernel RBF yang mengontrol pengaruh titik data tunggal.
-`probability` = True -> flag (nilai boolean True atau False) yang menentukan apakah model akan menghitung probabilitas prediksi kelas atau tidak.
-`random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
-**Kelebihan**: SVC bekerja sangat baik pada dataset dengan batas-batas kelas yang jelas. Algoritma ini optimal untuk dataset yang tidak seimbang dan mampu menemukan hyperplane yang memaksimalkan margin antara dua kelas.
-**Kekurangan**: SVC tidak skalabel dengan baik pada dataset yang sangat besar, karena waktu komputasinya tinggi. Selain itu, pemilihan kernel yang salah bisa menyebabkan performa yang buruk.
+    **Cara kerja**: Random Forest adalah algoritma ensemble yang membangun beberapa pohon keputusan independen dan menggabungkan hasil prediksinya untuk membuat keputusan akhir. Setiap pohon dibangun dari subset acak dari fitur dan sampel data, yang membantu mengurangi varians dan meningkatkan generalisasi model.
 
-5. K-Nearest Neighbors Classifier (KNN)
-**Cara kerja**: KNN mengklasifikasikan sampel berdasarkan kelas mayoritas dari k tetangga terdekat. KNN adalah algoritma instance-based learning di mana sampel baru diklasifikasikan dengan menghitung jarak ke sampel yang sudah dikenal, dan kelas yang paling umum di antara tetangga tersebut akan dipilih sebagai prediksi.
-**Parameter**:
-`n_neighbors` = 9 -> Jumlah tetangga yang dipertimbangkan.
-`algorithm` = 'auto' -> Algoritma yang digunakan untuk menemukan tetangga terdekat.
-`weights` = 'uniform' -> Menentukan cara kontribusi tetangga-tetangga terdekat (neighbors) dalam penentuan prediksi.
-**Kelebihan**: KNN adalah algoritma yang sederhana dan tidak memerlukan pelatihan. KNN sangat cocok untuk data yang tidak linier dan mudah diimplementasikan.
-**Kekurangan**: KNN sangat sensitif terhadap jumlah tetangga yang dipilih dan dapat lambat pada dataset yang besar. Algoritma ini juga rentan terhadap noise dalam data.
+    **Parameter**:
 
-6. XGBoost Classifier
-**Cara kerja**: XGBoost adalah algoritma boosting yang dirancang untuk efisiensi dan performa tinggi. Sama seperti Gradient Boosting, ia membangun pohon keputusan secara bertahap. Namun, XGBoost lebih dioptimalkan untuk menangani outliers dan overfitting dengan penggunaan regulasi tambahan, penanganan missing data, dan paralelisme.
-Parameter:
-`objective` = 'binary:logistic' -> Tipe tugas untuk klasifikasi biner.
-`colsample_bytree` = 0.8 -> Proporsi fitur yang digunakan untuk setiap pohon.
-`learning_rate` = 0.1 -> Kecepatan pembelajaran.
-`max_depth` = 7 -> Batas kedalaman pohon untuk mengontrol overfitting.
-`n_estimators` = 200 -> Jumlah pohon yang digunakan.
-`random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
-**Kelebihan**: XGBoost adalah versi optimasi dari Gradient Boosting, yang terkenal dengan performa tinggi dan kemampuan menangani data yang tidak seimbang dengan baik. Algoritma ini lebih efisien dan cepat dibandingkan Gradient Boosting biasa.
-**Kekurangan**: Sama seperti Gradient Boosting, XGBoost dapat overfit jika tidak diatur dengan baik. Selain itu, tuning XGBoost memerlukan waktu dan pemahaman yang lebih mendalam.
+    `n_estimators` = 100 -> Jumlah pohon dalam keputusan.
 
-7. MLPClassifier (Multilayer Perceptron)
-**Cara kerja**: MLPClassifier adalah jaringan saraf tiruan (artificial neural network) yang terdiri dari lapisan input, lapisan tersembunyi, dan lapisan output. Setiap neuron pada lapisan tersembunyi menggunakan fungsi aktivasi untuk memproses data, dan model ini mampu menangkap hubungan non-linear antara fitur. Algoritma ini mempelajari pola kompleks dalam data melalui backpropagation.
-Parameter:
-`max_iter` = 700 -> Jumlah iterasi maksimum.
-`activation` = 'tanh' -> Fungsi aktivasi yang digunakan untuk hidden layer.
-`hidden_layer_sizes` = (100,) -> Jumlah neuron di hidden layer.
-`solver` = 'adam' -> Algoritma optimasi berbasis gradient descent.
-`random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
-**Kelebihan**: MLP adalah jaringan saraf tiruan yang mampu menangkap pola non-linear dan interaksi kompleks antar fitur. Algoritma ini seringkali menghasilkan performa yang tinggi ketika dataset memiliki hubungan yang rumit antar fitur.
-**Kekurangan**: MLP cenderung memerlukan tuning yang lebih rumit dan lebih banyak waktu komputasi. Selain itu, MLP rawan overfitting jika jaringan terlalu kompleks.
+    `max_depth` = 10 -> Batas kedalaman pohon untuk mengontrol overfitting.
+
+    `min_samples_split` = 2 -> Jumlah minimum sampel untuk membagi node.
+
+    `random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
+
+    **Kelebihan**: Random Forest sangat baik dalam menangani dataset dengan fitur yang banyak serta secara alami mengatasi overfitting karena melakukan averaging dari beberapa decision trees. Algoritma ini juga robust terhadap data yang tidak seimbang.
+
+    **Kekurangan**: Random Forest dapat menjadi lambat pada dataset yang sangat besar, terutama jika menggunakan banyak pohon. Selain itu, interpretasi dari model ini tidak sesederhana Logistic Regression.
+
+- Gradient Boosting Classifier
+
+    **Cara kerja**: Gradient Boosting bekerja dengan membangun pohon keputusan secara bertahap, di mana setiap pohon baru mencoba memperbaiki kesalahan dari pohon sebelumnya. Setiap iterasi mencoba mengurangi kesalahan residu dengan cara memprediksi kesalahan dari prediksi sebelumnya dan menambahkannya ke prediksi akhir.
+
+    **Parameter**
+
+    `loss` = 'log_loss' -> Fungsi kerugian yang digunakan untuk optimasi.
+
+    `learning_rate` = 0.1 -> Kecepatan pembelajaran.
+
+    `max_depth` = 3 -> Batas kedalaman pohon untuk mengontrol overfitting.
+
+    `n_estimators` = 200 -> Jumlah pohon yang digunakan.
+
+    `random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
+
+    **Kelebihan**: Gradient Boosting adalah salah satu metode ensemble yang sangat powerful, karena menggabungkan beberapa weak learners untuk menghasilkan model yang kuat. Algoritma ini biasanya bekerja sangat baik pada data yang tidak seimbang dan dapat mencapai performa tinggi.
+
+    **Kekurangan**: Gradient Boosting rentan terhadap overfitting jika tidak dikontrol dengan baik. Selain itu, waktu komputasi yang diperlukan relatif lebih lama dibandingkan model lain, terutama pada dataset besar.
+
+- Support Vector Classifier (SVC)
+
+    **Cara kerja** SVC mencari hyperplane optimal yang memisahkan dua kelas dengan margin maksimal. Dengan menggunakan kernel, SVC dapat memetakan data yang tidak terpisahkan secara linear ke dimensi yang lebih tinggi agar dapat dipisahkan. SVC cocok untuk kasus klasifikasi biner dengan margin yang jelas antara kelas.
+
+    **Parameter**:
+
+    `C` = 1 -> Parameter regularisasi yang menentukan keseimbangan antara margin yang lebar dan kesalahan klasifikasi.
+
+    `kernel` = 'rbf' -> Kernel Radial Basis Function untuk menangani data yang tidak linier.
+
+    `gamma` = 'scale' -> Skala untuk kernel RBF yang mengontrol pengaruh titik data tunggal.
+    `probability` = True -> flag (nilai boolean True atau False) yang menentukan apakah model akan menghitung probabilitas prediksi kelas atau tidak.
+
+    `random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
+
+    **Kelebihan**: SVC bekerja sangat baik pada dataset dengan batas-batas kelas yang jelas. Algoritma ini optimal untuk dataset yang tidak seimbang dan mampu menemukan hyperplane yang memaksimalkan margin antara dua kelas.
+
+    **Kekurangan**: SVC tidak skalabel dengan baik pada dataset yang sangat besar, karena waktu komputasinya tinggi. Selain itu, pemilihan kernel yang salah bisa menyebabkan performa yang buruk.
+
+- K-Nearest Neighbors Classifier (KNN)
+
+    **Cara kerja**: KNN mengklasifikasikan sampel berdasarkan kelas mayoritas dari k tetangga terdekat. KNN adalah algoritma instance-based learning di mana sampel baru diklasifikasikan dengan menghitung jarak ke sampel yang sudah dikenal, dan kelas yang paling umum di antara tetangga tersebut akan dipilih sebagai prediksi.
+
+    **Parameter**:
+
+    `n_neighbors` = 9 -> Jumlah tetangga yang dipertimbangkan.
+
+    `algorithm` = 'auto' -> Algoritma yang digunakan untuk menemukan tetangga terdekat.
+
+    `weights` = 'uniform' -> Menentukan cara kontribusi tetangga-tetangga terdekat (neighbors) dalam penentuan prediksi.
+
+    **Kelebihan**: KNN adalah algoritma yang sederhana dan tidak memerlukan pelatihan. KNN sangat cocok untuk data yang tidak linier dan mudah diimplementasikan.
+
+    **Kekurangan**: KNN sangat sensitif terhadap jumlah tetangga yang dipilih dan dapat lambat pada dataset yang besar. Algoritma ini juga rentan terhadap noise dalam data.
+
+- XGBoost Classifier
+
+    **Cara kerja**: XGBoost adalah algoritma boosting yang dirancang untuk efisiensi dan performa tinggi. Sama seperti Gradient Boosting, ia membangun pohon keputusan secara bertahap. Namun, XGBoost lebih dioptimalkan untuk menangani outliers dan overfitting dengan penggunaan regulasi tambahan, penanganan missing data, dan paralelisme.
+
+    Parameter:
+
+    `objective` = 'binary:logistic' -> Tipe tugas untuk klasifikasi biner.
+
+    `colsample_bytree` = 0.8 -> Proporsi fitur yang digunakan untuk setiap pohon.
+
+    `learning_rate` = 0.1 -> Kecepatan pembelajaran.
+
+    `max_depth` = 7 -> Batas kedalaman pohon untuk mengontrol overfitting.
+
+    `n_estimators` = 200 -> Jumlah pohon yang digunakan.
+
+    `random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
+
+    **Kelebihan**: XGBoost adalah versi optimasi dari Gradient Boosting, yang terkenal dengan performa tinggi dan kemampuan menangani data yang tidak seimbang dengan baik. Algoritma ini lebih efisien dan cepat dibandingkan Gradient Boosting biasa.
+
+    **Kekurangan**: Sama seperti Gradient Boosting, XGBoost dapat overfit jika tidak diatur dengan baik. Selain itu, tuning XGBoost memerlukan waktu dan pemahaman yang lebih mendalam.
+
+- MLPClassifier (Multilayer Perceptron)
+
+    **Cara kerja**: MLPClassifier adalah jaringan saraf tiruan (artificial neural network) yang terdiri dari lapisan input, lapisan tersembunyi, dan lapisan output. Setiap neuron pada lapisan tersembunyi menggunakan fungsi aktivasi untuk memproses data, dan model ini mampu menangkap hubungan non-linear antara fitur. Algoritma ini mempelajari pola kompleks dalam data melalui backpropagation.
+
+    Parameter:
+
+    `max_iter` = 700 -> Jumlah iterasi maksimum.
+
+    `activation` = 'tanh' -> Fungsi aktivasi yang digunakan untuk hidden layer.
+
+    `hidden_layer_sizes` = (100,) -> Jumlah neuron di hidden layer.
+
+    `solver` = 'adam' -> Algoritma optimasi berbasis gradient descent.
+
+    `random_state` = 42 -> Untuk mengatur nilai acak dalam algoritma untuk memastikan hasil yang dapat direproduksi.
+
+    **Kelebihan**: MLP adalah jaringan saraf tiruan yang mampu menangkap pola non-linear dan interaksi kompleks antar fitur. Algoritma ini seringkali menghasilkan performa yang tinggi ketika dataset memiliki hubungan yang rumit antar fitur.
+
+    **Kekurangan**: MLP cenderung memerlukan tuning yang lebih rumit dan lebih banyak waktu komputasi. Selain itu, MLP rawan overfitting jika jaringan terlalu kompleks.
 
 Model terbaik yang dipilih pada kasus ini adalah Gradient Boosting Classifier. Penjelasan detail mengapa model ini dipilih dapat dilihat pada section selanjutnya
 
