@@ -48,8 +48,6 @@ Model-model ini akan diuji menggunakan metrik evaluasi yang relevan seperti akur
 
 Data yang digunakan dalam proyek ini adalah [Bank Customer Churn Prediction](https://www.kaggle.com/datasets/shantanudhakadd/bank-customer-churn-prediction) yang berisi informasi mengenai demografi dan informasi yang berhubungan lainnya. Dataset ini berisi sekitar 10.000 sampel dan mencakup beberapa fitur yang relevan untuk prediksi churn.
 
-Selanjutnya uraikanlah seluruh variabel atau fitur pada data. Sebagai contoh:  
-
 ### Variabel-variabel pada data Bank Customer Churn Prediction
 
 - CustomerId: ID unik untuk setiap pelanggan.
